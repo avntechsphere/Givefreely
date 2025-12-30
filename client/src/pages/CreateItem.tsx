@@ -91,7 +91,7 @@ export default function CreateItem() {
                     )}
                   />
 
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-4 relative z-10">
                     <FormField
                       control={form.control}
                       name="category"
@@ -104,7 +104,7 @@ export default function CreateItem() {
                                 <SelectValue placeholder="Select category" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-50">
                               {categories.map((c) => (
                                 <SelectItem key={c} value={c}>{c}</SelectItem>
                               ))}
@@ -127,7 +127,7 @@ export default function CreateItem() {
                                 <SelectValue placeholder="Select condition" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-50">
                               {conditions.map((c) => (
                                 <SelectItem key={c} value={c}>{c}</SelectItem>
                               ))}

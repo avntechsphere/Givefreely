@@ -34,9 +34,9 @@ export function Login() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Email or Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="username" {...field} />
+                  <Input placeholder="your@email.com or +1234567890" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

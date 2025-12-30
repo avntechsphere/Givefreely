@@ -111,5 +111,12 @@ export async function registerRoutes(
     res.status(201).json(message);
   });
 
+  app.patch("/api/user/profile", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const { name, location } = req.body;
+    const updated = await storage.updateUserProfile(req.user.id, { name, location });
+    res.json(updated);
+  });
+
   return httpServer;
 }

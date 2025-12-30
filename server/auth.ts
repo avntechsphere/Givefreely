@@ -61,6 +61,9 @@ export function setupAuth(app: Express) {
     name: z.string().min(1),
     email: z.string().email().optional(),
     phoneNumber: z.string().optional(),
+    location: z.string().optional(),
+    phonePublic: z.boolean().optional(),
+    emailPublic: z.boolean().optional(),
   });
 
   const loginSchema = z.object({

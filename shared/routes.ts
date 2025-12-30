@@ -17,12 +17,24 @@ export const errorSchemas = {
   }),
 };
 
+// Registration schema with strict password validation
+export const registerSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email().optional(),
+  phoneNumber: z.string().optional(),
+  location: z.string().optional(),
+  phonePublic: z.boolean().optional(),
+  emailPublic: z.boolean().optional(),
+});
+
 export const api = {
   auth: {
     register: {
       method: 'POST' as const,
       path: '/api/register',
-      input: insertUserSchema,
+      input: registerSchema,
       responses: {
         201: z.custom<typeof users.$inferSelect>(),
         400: errorSchemas.validation,

@@ -91,7 +91,7 @@ export default function CreateItem() {
                     )}
                   />
 
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-4 relative z-10">
                     <FormField
                       control={form.control}
                       name="category"
@@ -104,7 +104,7 @@ export default function CreateItem() {
                                 <SelectValue placeholder="Select category" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-50">
                               {categories.map((c) => (
                                 <SelectItem key={c} value={c}>{c}</SelectItem>
                               ))}
@@ -127,7 +127,7 @@ export default function CreateItem() {
                                 <SelectValue placeholder="Select condition" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-50">
                               {conditions.map((c) => (
                                 <SelectItem key={c} value={c}>{c}</SelectItem>
                               ))}
@@ -184,26 +184,26 @@ export default function CreateItem() {
                     name="images"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Image URL (Optional)</FormLabel>
+                        <FormLabel>Photos (Optional)</FormLabel>
                         <FormControl>
-                          {/* 
-                            NOTE: For a real app, use file upload. 
-                            For MVP as per spec, we use a text input for URL.
-                            The schema expects string array, but form sends string.
-                            We handle conversion in onSubmit.
-                          */}
                           <div className="relative">
                             <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input 
-                              placeholder="https://..." 
+                              type="file"
+                              multiple
+                              accept="image/*"
+                              placeholder="Select photos" 
                               className="pl-10 h-11"
-                              {...field} 
-                              value={field.value as unknown as string || ""} // Cast to string for input
+                              onChange={(e) => {
+                                const files = Array.from(e.target.files || []);
+                                const urls = files.map(f => URL.createObjectURL(f));
+                                field.onChange(urls);
+                              }}
                             />
                           </div>
                         </FormControl>
                         <FormDescription>
-                          Paste a direct link to an image (e.g. from Unsplash).
+                          Upload photos from your gallery or take new ones.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { insertUserSchema } from "@shared/schema";
+import { registerSchema } from "@shared/routes";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -34,9 +34,9 @@ export function Login() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Email or Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="username" {...field} />
+                  <Input placeholder="your@email.com or +1234567890" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -73,7 +73,7 @@ export function Register() {
   const { registerMutation } = useAuth();
   
   const form = useForm({
-    resolver: zodResolver(insertUserSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: { username: "", password: "", name: "", location: "" },
   });
 
@@ -105,9 +105,9 @@ export function Register() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Phone Number or Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="johndoe" {...field} />
+                  <Input placeholder="+1234567890 or user@email.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

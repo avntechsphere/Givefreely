@@ -5,16 +5,22 @@ import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(), // email
+  username: text("username").notNull().unique(), // email or phone
   password: text("password").notNull(),
   name: text("name").notNull(),
   location: text("location"),
+  phoneNumber: text("phone_number"),
+  email: text("email"),
+  phonePublic: boolean("phone_public").default(false),
+  emailPublic: boolean("email_public").default(false),
   reputation: integer("reputation").default(0),
   givenCount: integer("given_count").default(0),
   receivedCount: integer("received_count").default(0),
   emailVerified: boolean("email_verified").default(false),
   verificationCode: text("verification_code"),
   verificationCodeExpires: timestamp("verification_code_expires"),
+  passwordResetToken: text("password_reset_token"),
+  passwordResetExpires: timestamp("password_reset_expires"),
 });
 
 export const items = pgTable("items", {
@@ -45,6 +51,13 @@ export const messages = pgTable("messages", {
   senderId: integer("sender_id").notNull(), // references users.id
   content: text("content").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Session table for express-session with connect-pg-simple
+export const session = pgTable("session", {
+  sid: text("sid").primaryKey(),
+  sess: jsonb("sess").$type<Record<string, any>>().notNull(),
+  expire: timestamp("expire").notNull(),
 });
 
 // Relations
@@ -91,6 +104,7 @@ export const insertUserSchema = createInsertSchema(users).omit({
   reputation: true, 
   givenCount: true, 
   receivedCount: true 
+  , passwordResetToken: true, passwordResetExpires: true
 });
 
 export const insertItemSchema = createInsertSchema(items).omit({ 

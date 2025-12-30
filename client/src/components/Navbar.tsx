@@ -80,6 +80,12 @@ export function Navbar() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <Link href="/profile/edit">
+                    <DropdownMenuItem className="gap-2 cursor-pointer">
+                      <User className="h-4 w-4" />
+                      <span>Edit Profile</span>
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="gap-2">
                     <User className="h-4 w-4" />
                     <span>Reputation: {user.reputation}</span>

@@ -105,9 +105,9 @@ export function Register() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Phone Number or Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="johndoe" {...field} />
+                  <Input placeholder="+1234567890 or user@email.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

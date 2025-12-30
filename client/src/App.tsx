@@ -12,6 +12,7 @@ import Browse from "@/pages/Browse";
 import ItemDetail from "@/pages/ItemDetail";
 import CreateItem from "@/pages/CreateItem";
 import Dashboard from "@/pages/Dashboard";
+import ProfileEdit from "@/pages/ProfileEdit";
 import { Login, Register } from "@/pages/Auth";
 import NotFound from "@/pages/not-found";
 import { Loader2 } from "lucide-react";
@@ -48,6 +49,9 @@ function Router() {
           </Route>
           <Route path="/dashboard">
             <ProtectedRoute component={Dashboard} />
+          </Route>
+          <Route path="/profile/edit">
+            <ProtectedRoute component={ProfileEdit} />
           </Route>
 
           <Route component={NotFound} />

@@ -94,8 +94,6 @@ export default function ItemDetail() {
                 <div>
                   <p className="text-sm font-medium">Listed by {item.owner.name}</p>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                     <span>@{item.owner.username}</span>
-                     <span>•</span>
                      <span className="text-accent font-medium">{item.owner.reputation} Reputation</span>
                   </div>
                 </div>

@@ -5,10 +5,11 @@ import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(), // email
+  username: text("username").notNull().unique(), // email or phone
   password: text("password").notNull(),
   name: text("name").notNull(),
   location: text("location"),
+  phoneNumber: text("phone_number"),
   reputation: integer("reputation").default(0),
   givenCount: integer("given_count").default(0),
   receivedCount: integer("received_count").default(0),

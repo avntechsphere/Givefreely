@@ -12,6 +12,7 @@ type AuthContextType = {
   loginMutation: ReturnType<typeof useLoginMutation>;
   logoutMutation: ReturnType<typeof useLogoutMutation>;
   registerMutation: ReturnType<typeof useRegisterMutation>;
+  updateProfileMutation: ReturnType<typeof useUpdateProfileMutation>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -33,6 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginMutation = useLoginMutation();
   const logoutMutation = useLogoutMutation();
   const registerMutation = useRegisterMutation();
+  const updateProfileMutation = useUpdateProfileMutation();
 
   return (
     <AuthContext.Provider
@@ -43,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginMutation,
         logoutMutation,
         registerMutation,
+        updateProfileMutation,
       }}
     >
       {children}
@@ -159,4 +162,44 @@ function useLogoutMutation() {
       });
     },
   });
+}
+
+function useUpdateProfileMutation() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (data: z.infer<typeof api.auth.updateProfile.input>) => {
+      const res = await fetch(api.auth.updateProfile.path, {
+        method: api.auth.updateProfile.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Failed to update profile");
+      }
+      
+      return await res.json();
+    },
+    onSuccess: (user: User) => {
+      queryClient.setQueryData([api.auth.me.path], user);
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been saved successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Update failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+}
+
+export function useUpdateProfile() {
+  return useContext(AuthContext)?.updateProfileMutation || useUpdateProfileMutation();
 }

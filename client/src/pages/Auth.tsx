@@ -8,7 +8,7 @@ import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Gift, Loader2 } from "lucide-react";
 
 export function Login() {
@@ -34,10 +34,13 @@ export function Login() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Email or Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="username" {...field} />
+                  <Input placeholder="john@example.com or +1234567890" {...field} />
                 </FormControl>
+                <FormDescription>
+                  Enter your email address or phone number to log in.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -105,10 +108,13 @@ export function Register() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Email or Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="johndoe" {...field} />
+                  <Input placeholder="john@example.com or +1234567890" {...field} />
                 </FormControl>
+                <FormDescription>
+                  You can sign up using either your email address or phone number for easy account recovery.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

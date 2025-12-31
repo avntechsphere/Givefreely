@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, ArrowLeft, Upload } from "lucide-react";
+import { Loader2, ArrowLeft, Upload, Camera } from "lucide-react";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -184,26 +184,70 @@ export default function CreateItem() {
                     name="images"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Image URL (Optional)</FormLabel>
+                        <FormLabel>Item Photos (Optional)</FormLabel>
                         <FormControl>
-                          {/* 
-                            NOTE: For a real app, use file upload. 
-                            For MVP as per spec, we use a text input for URL.
-                            The schema expects string array, but form sends string.
-                            We handle conversion in onSubmit.
-                          */}
-                          <div className="relative">
-                            <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input 
-                              placeholder="https://..." 
-                              className="pl-10 h-11"
-                              {...field} 
-                              value={field.value as unknown as string || ""} // Cast to string for input
-                            />
+                          <div className="space-y-3">
+                            <div className="flex gap-2">
+                              <label className="flex-1 flex items-center justify-center gap-2 cursor-pointer border-2 border-dashed border-primary/30 rounded-lg p-4 hover:border-primary/50 transition-colors">
+                                <Upload className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">Upload from Gallery</span>
+                                <input 
+                                  type="file" 
+                                  accept="image/*" 
+                                  className="hidden" 
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      const reader = new FileReader();
+                                      reader.onloadend = () => {
+                                        field.onChange(reader.result as string);
+                                      };
+                                      reader.readAsDataURL(file);
+                                    }
+                                  }}
+                                />
+                              </label>
+                              <label className="flex-1 flex items-center justify-center gap-2 cursor-pointer border-2 border-dashed border-primary/30 rounded-lg p-4 hover:border-primary/50 transition-colors">
+                                <Camera className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">Take Photo</span>
+                                <input 
+                                  type="file" 
+                                  accept="image/*" 
+                                  capture="environment"
+                                  className="hidden" 
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      const reader = new FileReader();
+                                      reader.onloadend = () => {
+                                        field.onChange(reader.result as string);
+                                      };
+                                      reader.readAsDataURL(file);
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </div>
+                            {field.value && typeof field.value === 'string' && (
+                              <div className="relative border border-primary/20 rounded-lg p-2 bg-primary/5">
+                                <img 
+                                  src={field.value} 
+                                  alt="Preview" 
+                                  className="w-full h-32 object-cover rounded"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => field.onChange("")}
+                                  className="absolute top-4 right-4 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </FormControl>
                         <FormDescription>
-                          Paste a direct link to an image (e.g. from Unsplash).
+                          Upload a photo from your device or take a new photo with your camera.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>

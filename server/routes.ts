@@ -11,6 +11,14 @@ export async function registerRoutes(
 ): Promise<Server> {
   setupAuth(app);
 
+  app.put(api.auth.updateProfile.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const input = api.auth.updateProfile.input.parse(req.body);
+    const user = await storage.updateUserProfile(req.user.id, input);
+    if (!user) return res.sendStatus(404);
+    res.json(user);
+  });
+
   app.get(api.items.list.path, async (req, res) => {
     const items = await storage.getItems({
       search: req.query.search as string,

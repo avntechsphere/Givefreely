@@ -68,6 +68,20 @@ export const api = {
         401: errorSchemas.unauthorized,
       },
     },
+    updateProfile: {
+      method: 'PUT' as const,
+      path: '/api/user/profile',
+      input: z.object({
+        name: z.string(),
+        location: z.string().optional(),
+        phoneNumber: z.string().optional(),
+      }),
+      responses: {
+        200: z.custom<typeof users.$inferSelect>(),
+        401: errorSchemas.unauthorized,
+        400: errorSchemas.validation,
+      },
+    },
   },
   items: {
     list: {

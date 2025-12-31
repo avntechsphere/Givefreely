@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Plus, User, LogOut, Menu, Gift } from "lucide-react";
+import { Plus, User, LogOut, Menu, Gift, Settings } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 
@@ -84,6 +84,13 @@ export function Navbar() {
                     <User className="h-4 w-4" />
                     <span>Reputation: {user.reputation}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <Link href="/profile">
+                    <DropdownMenuItem className="gap-2 cursor-pointer">
+                      <Settings className="h-4 w-4" />
+                      <span>Edit Profile</span>
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 
                     onClick={() => logoutMutation.mutate()}

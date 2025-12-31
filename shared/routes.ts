@@ -75,6 +75,8 @@ export const api = {
         name: z.string(),
         location: z.string().optional(),
         phoneNumber: z.string().optional(),
+        emailPrivate: z.boolean().optional(),
+        phonePrivate: z.boolean().optional(),
       }),
       responses: {
         200: z.custom<typeof users.$inferSelect>(),

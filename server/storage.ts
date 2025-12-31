@@ -55,7 +55,7 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async updateUserProfile(id: number, data: { name?: string; location?: string; phoneNumber?: string }): Promise<User | undefined> {
+  async updateUserProfile(id: number, data: { name?: string; location?: string; phoneNumber?: string; emailPrivate?: boolean; phonePrivate?: boolean }): Promise<User | undefined> {
     const [user] = await db.update(users)
       .set(data)
       .where(eq(users.id, id))

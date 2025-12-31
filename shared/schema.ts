@@ -10,6 +10,8 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   location: text("location"),
   phoneNumber: text("phone_number"),
+  emailPrivate: boolean("email_private").default(true),
+  phonePrivate: boolean("phone_private").default(true),
   reputation: integer("reputation").default(0),
   givenCount: integer("given_count").default(0),
   receivedCount: integer("received_count").default(0),

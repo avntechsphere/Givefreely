@@ -10,11 +10,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import { useUpdateProfile } from "@/hooks/use-auth";
+import { Switch } from "@/components/ui/switch";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   location: z.string().optional(),
   phoneNumber: z.string().optional(),
+  emailPrivate: z.boolean(),
+  phonePrivate: z.boolean(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -30,6 +33,8 @@ export default function Profile() {
       name: user?.name || "",
       location: user?.location || "",
       phoneNumber: user?.phoneNumber || "",
+      emailPrivate: user?.emailPrivate ?? true,
+      phonePrivate: user?.phonePrivate ?? true,
     },
   });
 
@@ -97,7 +102,7 @@ export default function Profile() {
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number (WhatsApp enabled)</FormLabel>
+                      <FormLabel>Phone Number</FormLabel>
                       <FormControl>
                         <Input 
                           type="tel" 
@@ -107,9 +112,6 @@ export default function Profile() {
                           value={field.value || ""}
                         />
                       </FormControl>
-                      <FormDescription>
-                        Your phone number can be used for WhatsApp communication when connecting with others.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -137,7 +139,53 @@ export default function Profile() {
                   )}
                 />
 
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t">
+                <div className="border-t pt-6">
+                  <h3 className="font-bold text-lg mb-4">Privacy Settings</h3>
+                  <div className="space-y-4">
+                    <div className="rounded-lg border p-4 bg-muted/50">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5 flex-1">
+                          <FormLabel className="text-base">Keep email private</FormLabel>
+                          <FormDescription>
+                            Hide your email from other users
+                          </FormDescription>
+                        </div>
+                        <FormField
+                          control={form.control}
+                          name="emailPrivate"
+                          render={({ field }) => (
+                            <Switch 
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4 bg-muted/50">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5 flex-1">
+                          <FormLabel className="text-base">Keep phone number private</FormLabel>
+                          <FormDescription>
+                            Hide your phone number from other users
+                          </FormDescription>
+                        </div>
+                        <FormField
+                          control={form.control}
+                          name="phonePrivate"
+                          render={({ field }) => (
+                            <Switch 
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4 pt-6 border-t">
                   <div>
                     <p className="text-sm font-medium text-foreground">{user.givenCount}</p>
                     <p className="text-xs text-muted-foreground">Items Given</p>
@@ -161,6 +209,8 @@ export default function Profile() {
                         name: user.name,
                         location: user.location || "",
                         phoneNumber: user.phoneNumber || "",
+                        emailPrivate: user.emailPrivate ?? true,
+                        phonePrivate: user.phonePrivate ?? true,
                       });
                     }}
                     disabled={updateProfile.isPending}
